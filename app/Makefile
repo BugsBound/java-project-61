@@ -8,3 +8,6 @@ build:
 
 clean:
 	./gradlew clean
+
+check-lint:
+	./gradlew checkstyleMain
