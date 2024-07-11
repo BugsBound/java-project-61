@@ -1,6 +1,10 @@
 package hexlet.code;
 
-import hexlet.code.games.*;
+import hexlet.code.games.CalcGame;
+import hexlet.code.games.EvenGame;
+import hexlet.code.games.NodGame;
+import hexlet.code.games.PrimeGame;
+import hexlet.code.games.ProgressionGame;
 
 import java.util.Scanner;
 
@@ -16,8 +20,6 @@ public class Engine {
     private static final int NOD_GAME = 4;
     private static final int PROGRESSION_GAME = 5;
     private static final int PRIME_GAME = 6;
-
-    private static final int LENGTH_ANSWER = 2;
 
     public static void start() throws Exception {
         Scanner sc = new Scanner(System.in);
@@ -52,21 +54,21 @@ public class Engine {
 
         Cli.helloUser(name);
 
+        if (HELLO_GAME == selectedGame) {
+            return;
+        }
+
         for (int i = 0; i < ROUNDS; ++i) {
-            String[] dataRound = new String[LENGTH_ANSWER];
             boolean needPrintRules = i == FIRST_ROUND;
 
-            switch (selectedGame) {
-                case HELLO_GAME -> {
-                    return;
-                }
-                case EVEN_GAME -> dataRound = EvenGame.roundGenerator(needPrintRules);
-                case CALC_GAME -> dataRound = CalcGame.roundGenerator(needPrintRules);
-                case NOD_GAME -> dataRound = NodGame.roundGenerator(needPrintRules);
-                case PROGRESSION_GAME -> dataRound = ProgressionGame.roundGenerator(needPrintRules);
-                case PRIME_GAME -> dataRound = PrimeGame.roundGenerator(needPrintRules);
+            String[] dataRound = switch (selectedGame) {
+                case EVEN_GAME -> EvenGame.roundGenerator(needPrintRules);
+                case CALC_GAME -> CalcGame.roundGenerator(needPrintRules);
+                case NOD_GAME -> NodGame.roundGenerator(needPrintRules);
+                case PROGRESSION_GAME -> ProgressionGame.roundGenerator(needPrintRules);
+                case PRIME_GAME -> PrimeGame.roundGenerator(needPrintRules);
                 default -> throw new Exception("Wrong game number!");
-            }
+            };
 
             System.out.println("Question: " + dataRound[QUESTION_INDEX]);
             System.out.print("Your answer: ");

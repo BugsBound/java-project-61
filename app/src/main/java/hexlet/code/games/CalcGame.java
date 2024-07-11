@@ -2,7 +2,7 @@ package hexlet.code.games;
 
 import java.util.Random;
 
-public class CalcGame{
+public class CalcGame {
     private enum Operation {
         MULTIPLICATION,
         ADDITION,
@@ -27,22 +27,10 @@ public class CalcGame{
         int leftNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
         int rightNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
 
-        String rightAnswer, question;
-        switch (getRandomOperation(random)) {
-            case MULTIPLICATION -> {
-                rightAnswer = String.valueOf(leftNum * rightNum);
-                question = leftNum + " * " + rightNum;
-            }
-            case ADDITION -> {
-                rightAnswer = String.valueOf(leftNum + rightNum);
-                question = leftNum + " + " + rightNum;
-            }
-            default -> {
-                rightAnswer = String.valueOf(leftNum - rightNum);
-                question = leftNum + " - " + rightNum;
-            }
-        }
-
-        return new String[] {question, rightAnswer};
+        return switch (getRandomOperation(random)) {
+            case MULTIPLICATION -> new String[] {leftNum + " * " + rightNum, String.valueOf(leftNum * rightNum)};
+            case ADDITION -> new String[] {leftNum + " + " + rightNum, String.valueOf(leftNum + rightNum)};
+            case SUBTRACTION -> new String[] {leftNum + " - " + rightNum, String.valueOf(leftNum - rightNum)};
+        };
     }
 }
