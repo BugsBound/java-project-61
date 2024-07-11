@@ -31,26 +31,15 @@ public class App {
         System.out.print("May I have your name? ");
         String name = sc.nextLine();
         Cli.helloUser(name);
-        boolean isGameWin = false;
 
-        switch (selectedGame) {
-            case 1:
-                break;
-            case 2:
-                isGameWin = EvenGame.start();
-                break;
-            case 3:
-                isGameWin = CalcGame.start();
-                break;
-            default:
-                System.out.println("Wrong number!");
-                return;
-        }
-
-        if (isGameWin) {
-            System.out.println("Congratulations, " + name + "!");
-        } else {
-            System.out.println("Let's try again, " + name + "!");
+        try {
+            if (Engine.start(selectedGame)) {
+                System.out.println("Congratulations, " + name + "!");
+            } else {
+                System.out.println("Let's try again, " + name + "!");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
