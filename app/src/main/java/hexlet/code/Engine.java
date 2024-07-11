@@ -18,6 +18,7 @@ public class Engine {
                 "3 - Calc\n" +
                 "4 - GCD\n" +
                 "5 - Progression\n" +
+                "6 - Prime\n" +
                 "0 - Exit\n" +
                 "Your choice: ");
         if (sc.hasNextInt()) {
@@ -52,6 +53,7 @@ public class Engine {
                 case 3 -> dataRound = CalcGame.roundGenerator(needPrintRules);
                 case 4 -> dataRound = NodGame.roundGenerator(needPrintRules);
                 case 5 -> dataRound = ProgressionGame.roundGenerator(needPrintRules);
+                case 6 -> dataRound = PrimeGame.roundGenerator(needPrintRules);
                 default -> throw new Exception("Wrong game number!");
             }
 
