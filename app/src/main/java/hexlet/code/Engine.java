@@ -10,6 +10,15 @@ public class Engine {
     private static final int QUESTION_INDEX = 0;
     private static final int ANSWER_INDEX = 1;
 
+    private static final int HELLO_GAME = 1;
+    private static final int EVEN_GAME = 2;
+    private static final int CALC_GAME = 3;
+    private static final int NOD_GAME = 4;
+    private static final int PROGRESSION_GAME = 5;
+    private static final int PRIME_GAME = 6;
+
+    private static final int LENGTH_ANSWER = 2;
+
     public static void start() throws Exception {
         Scanner sc = new Scanner(System.in);
         int selectedGame;
@@ -44,42 +53,19 @@ public class Engine {
         Cli.helloUser(name);
 
         for (int i = 0; i < ROUNDS; ++i) {
-            String[] dataRound;
+            String[] dataRound = new String[LENGTH_ANSWER];
             boolean needPrintRules = i == FIRST_ROUND;
 
-//            switch (selectedGame) {
-//                case 1 -> {
-//                    return;
-//                }
-//                case 2 -> dataRound = EvenGame.roundGenerator(needPrintRules);
-//                case 3 -> dataRound = CalcGame.roundGenerator(needPrintRules);
-//                case 4 -> dataRound = NodGame.roundGenerator(needPrintRules);
-//                case 5 -> dataRound = ProgressionGame.roundGenerator(needPrintRules);
-//                case 6 -> dataRound = PrimeGame.roundGenerator(needPrintRules);
-//                default -> throw new Exception("Wrong game number!");
-//            }
-
-            int helloGame = 1;
-            int evenGame = 2;
-            int calcGame = 3;
-            int nodGame = 4;
-            int progressionGame = 5;
-            int primeGame = 6;
-
-            if (selectedGame == helloGame) {
-                return;
-            } else if (selectedGame == evenGame) {
-                dataRound = EvenGame.roundGenerator(needPrintRules);
-            } else if (selectedGame == calcGame) {
-                dataRound = CalcGame.roundGenerator(needPrintRules);
-            } else if (selectedGame == nodGame) {
-                NodGame.roundGenerator(needPrintRules);
-            } else if (selectedGame == progressionGame) {
-                dataRound = ProgressionGame.roundGenerator(needPrintRules);
-            } else if (selectedGame == primeGame) {
-                dataRound = PrimeGame.roundGenerator(needPrintRules);
-            } else {
-                throw new Exception("Wrong game number!");
+            switch (selectedGame) {
+                case HELLO_GAME -> {
+                    return;
+                }
+                case EVEN_GAME -> dataRound = EvenGame.roundGenerator(needPrintRules);
+                case CALC_GAME -> dataRound = CalcGame.roundGenerator(needPrintRules);
+                case NOD_GAME -> dataRound = NodGame.roundGenerator(needPrintRules);
+                case PROGRESSION_GAME -> dataRound = ProgressionGame.roundGenerator(needPrintRules);
+                case PRIME_GAME -> dataRound = PrimeGame.roundGenerator(needPrintRules);
+                default -> throw new Exception("Wrong game number!");
             }
 
             System.out.println("Question: " + dataRound[QUESTION_INDEX]);
