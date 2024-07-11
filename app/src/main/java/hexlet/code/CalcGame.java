@@ -4,60 +4,65 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class CalcGame {
-    public static boolean start() {
-        int NEED_MULT = 0;
-        int NEED_ADD = 1;
-        int NEED_SUB = 2;
-        int ROUNDS = 3;
+    private static final int NEED_MULT = 0;
+    private static final int NEED_ADD = 1;
+    private static final int NEED_SUB = 2;
+    private static final int ROUNDS = 3;
+    private static final int FROM_RANDOM_NUMBER = 1;
+    private static final int TO_RANDOM_NUMBER = 10;
 
+    public static boolean start() {
         System.out.println("What is the result of the expression?");
         Scanner sc = new Scanner(System.in);
-
         Random random = new Random();
-        int fromRandomNumber = 1;
-        int toRandomNumber = 10;
 
-        for (int i = 0; i < ROUNDS; ++i) {
-            int whatNeed = random.nextInt(NEED_MULT, NEED_SUB + 1);
-            int leftNum = random.nextInt(fromRandomNumber, toRandomNumber);
-            int rightNum = random.nextInt(fromRandomNumber, toRandomNumber);
-            System.out.print("Question: ");
+        for (int i = 0; i < ROUNDS; i++) {
+            int whatNeed = random.nextInt(NEED_SUB + 1);
+            int leftNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
+            int rightNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
+
             String question;
             int rightAnswer;
 
-            if (whatNeed == NEED_MULT) {
-                question = leftNum + " * " + rightNum;
-                rightAnswer = leftNum * rightNum;
-            } else if (whatNeed == NEED_ADD) {
-                question = leftNum + " + " + rightNum;
-                rightAnswer = leftNum + rightNum;
-            } else if (whatNeed == NEED_SUB) {
-                question = leftNum + " - " + rightNum;
-                rightAnswer = leftNum - rightNum;
-            } else {
-                System.out.println("Something Wrong!");
-                return false;
+            switch (whatNeed) {
+                case NEED_MULT -> {
+                    question = leftNum + " * " + rightNum;
+                    rightAnswer = leftNum * rightNum;
+                }
+                case NEED_ADD -> {
+                    question = leftNum + " + " + rightNum;
+                    rightAnswer = leftNum + rightNum;
+                }
+                case NEED_SUB -> {
+                    question = leftNum + " - " + rightNum;
+                    rightAnswer = leftNum - rightNum;
+                }
+                default -> {
+                    System.out.println("Something Wrong!");
+                    sc.close();
+                    return false;
+                }
             }
 
             System.out.print("Question: " + question + "\nYour answer: ");
-            int userAnswer = 0;
-
             try {
-                String answer = sc.nextLine();
-                userAnswer = Integer.parseInt(answer);
-            } catch (Exception e) {
-                return false;
-            }
+                int userAnswer = Integer.parseInt(sc.nextLine());
 
-            if (userAnswer == rightAnswer) {
-                System.out.println("Correct!");
-            } else {
-                System.out.println("'" + userAnswer + "' is wrong answer ;(. " +
-                        "Correct answer was '" + rightAnswer + "'.");
+                if (userAnswer == rightAnswer) {
+                    System.out.println("Correct!");
+                } else {
+                    System.out.println("'" + userAnswer + "' is wrong answer ;(. " +
+                            "Correct answer was '" + rightAnswer + "'.");
+                    sc.close();
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                sc.close();
                 return false;
             }
         }
 
+        sc.close();
         return true;
     }
 }
