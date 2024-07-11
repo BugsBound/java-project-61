@@ -1,4 +1,4 @@
-package hexlet.code;
+package hexlet.code.games;
 
 import java.util.Random;
 
@@ -19,7 +19,4 @@ public class EvenGame {
 
         return new String[] {question, rightAnswer};
     }
-
-
-
 }

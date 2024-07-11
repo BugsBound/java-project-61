@@ -1,4 +1,4 @@
-package hexlet.code;
+package hexlet.code.games;
 
 import java.util.Random;
 
@@ -18,23 +18,22 @@ public class ProgressionGame {
         Random random = new Random();
         int lengthProgression = random.nextInt(MAX_LENGTH_PROGRESSION - MIN_LENGTH_PROGRESSION + 1)
                 + MIN_LENGTH_PROGRESSION;
-        int hiddenStep = random.nextInt(lengthProgression) + 1;
+        int hiddenStep = random.nextInt(lengthProgression);
         int firstNumber = random.nextInt(TO_RANDOM_NUMBER - FROM_RANDOM_NUMBER) + FROM_RANDOM_NUMBER;
         int stepProgression = random.nextInt(MAX_STEP_PROGRESSION) + 1;
         int hiddenNum = 0;
         StringBuilder question = new StringBuilder();
-        question.append(firstNumber);
 
-        for (int i = 1; i < lengthProgression; ++i) {
-            question.append(" ");
-
-            if (hiddenStep - 1 == i) {
+        for (int i = 0; i < lengthProgression; ++i) {
+            if (i == hiddenStep) {
                 question.append("..");
-                hiddenNum = i * stepProgression + firstNumber;
-                continue;
+                hiddenNum = firstNumber + i * stepProgression;
+            } else {
+                question.append(firstNumber + i * stepProgression);
             }
-
-            question.append(i * stepProgression + firstNumber);
+            if (i < lengthProgression - 1) {
+                question.append(" ");
+            }
         }
 
         return new String[] {question.toString(), String.valueOf(hiddenNum)};
