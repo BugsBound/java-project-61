@@ -16,6 +16,7 @@ public class Engine {
                 "1 - Greet\n" +
                 "2 - Even\n" +
                 "3 - Calc\n" +
+                "4 - GCD\n" +
                 "0 - Exit\n" +
                 "Your choice: ");
         if (sc.hasNextInt()) {
@@ -40,13 +41,15 @@ public class Engine {
 
         for (int i = 0; i < ROUNDS; ++i) {
             String[] dataRound;
+            boolean needPrintRules = i == FIRST_ROUND;
 
             switch (selectedGame) {
                 case 1 -> {
                     return;
                 }
-                case 2 -> dataRound = EvenGame.roundGenerator(i == FIRST_ROUND);
-                case 3 -> dataRound = CalcGame.roundGenerator(i == FIRST_ROUND);
+                case 2 -> dataRound = EvenGame.roundGenerator(needPrintRules);
+                case 3 -> dataRound = CalcGame.roundGenerator(needPrintRules);
+                case 4 -> dataRound = NodGame.roundGenerator(needPrintRules);
                 default -> throw new Exception("Wrong game number!");
             }
 
