@@ -2,56 +2,47 @@ package hexlet.code;
 
 import java.util.Random;
 
-public class CalcGame implements Game {
+public class CalcGame{
     private enum Operation {
         MULTIPLICATION,
         ADDITION,
         SUBTRACTION
     }
-    private final int FROM_RANDOM_NUMBER = 1;
-    private final int TO_RANDOM_NUMBER = 10;
-    private final String RULES = "What is the result of the expression?";
-    private String rightAnswer;
-    Random random;
+    private static final int FROM_RANDOM_NUMBER = 1;
+    private static final int TO_RANDOM_NUMBER = 10;
+    private static final String RULES = "What is the result of the expression?";
 
-    CalcGame() {
-        this.random = new Random();
-        System.out.println(this.RULES);
-    }
-
-    public boolean isRightAnswer(String userAnswer) {
-        if (!userAnswer.equals(rightAnswer)) {
-            System.out.println("'" + userAnswer + "' is wrong answer ;(. " +
-                    "Correct answer was '" + rightAnswer + "'.");
-            return false;
-        }
-
-        return true;
-    }
-
-    public String getQuestion() {
-        int leftNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
-        int rightNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
-
-        return switch (this.getRandomOperation()) {
-            case MULTIPLICATION -> {
-                this.rightAnswer = String.valueOf(leftNum * rightNum);
-                yield leftNum + " * " + rightNum;
-            }
-            case ADDITION -> {
-                this.rightAnswer = String.valueOf(leftNum + rightNum);
-                yield leftNum + " + " + rightNum;
-            }
-            default -> {
-                this.rightAnswer = String.valueOf(leftNum - rightNum);
-                yield leftNum + " - " + rightNum;
-            }
-        };
-    }
-
-    private Operation getRandomOperation() {
+    private static Operation getRandomOperation(Random random) {
         Operation[] operations = Operation.values();
         int index = random.nextInt(operations.length);
         return operations[index];
+    }
+
+    public static String[] roundGenerator(boolean needPrintRules) {
+        if (needPrintRules) {
+            System.out.println(RULES);
+        }
+
+        Random random = new Random();
+        int leftNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
+        int rightNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
+
+        String rightAnswer, question;
+        switch (getRandomOperation(random)) {
+            case MULTIPLICATION -> {
+                rightAnswer = String.valueOf(leftNum * rightNum);
+                question = leftNum + " * " + rightNum;
+            }
+            case ADDITION -> {
+                rightAnswer = String.valueOf(leftNum + rightNum);
+                question = leftNum + " + " + rightNum;
+            }
+            default -> {
+                rightAnswer = String.valueOf(leftNum - rightNum);
+                question = leftNum + " - " + rightNum;
+            }
+        }
+
+        return new String[] {question, rightAnswer};
     }
 }

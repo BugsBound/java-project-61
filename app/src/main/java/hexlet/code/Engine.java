@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class Engine {
     private static final int ROUNDS = 3;
+    private static final int FIRST_ROUND = 0;
+    private static final int QUESTION_INDEX = 0;
+    private static final int ANSWER_INDEX = 1;
 
     public static void start() throws Exception {
         Scanner sc = new Scanner(System.in);
@@ -34,28 +37,31 @@ public class Engine {
         String name = sc.nextLine();
 
         Cli.helloUser(name);
-        Game game;
-
-        switch (selectedGame) {
-            case 1 -> {
-                return;
-            }
-            case 2 -> game = new EvenGame();
-            case 3 -> game = new CalcGame();
-            default -> throw new Exception("Wrong game number!");
-        }
 
         for (int i = 0; i < ROUNDS; ++i) {
-            System.out.println("Question: " + game.getQuestion());
+            String[] dataRound;
+
+            switch (selectedGame) {
+                case 1 -> {
+                    return;
+                }
+                case 2 -> dataRound = EvenGame.roundGenerator(i == FIRST_ROUND);
+                case 3 -> dataRound = CalcGame.roundGenerator(i == FIRST_ROUND);
+                default -> throw new Exception("Wrong game number!");
+            }
+
+            System.out.println("Question: " + dataRound[QUESTION_INDEX]);
             System.out.print("Your answer: ");
             String userAnswer = sc.nextLine();
 
-            if (!game.isRightAnswer(userAnswer)) {
+            if (userAnswer.equals(dataRound[ANSWER_INDEX])) {
+                System.out.println("Correct!");
+            } else {
+                System.out.println("'" + userAnswer + "' is wrong answer ;(. " +
+                        "Correct answer was '" + dataRound[ANSWER_INDEX] + "'.");
                 System.out.println("Let's try again, " + name + "!");
                 sc.close();
                 return;
-            } else {
-                System.out.println("Correct!");
             }
         }
 
