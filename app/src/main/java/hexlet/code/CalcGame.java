@@ -1,68 +1,57 @@
 package hexlet.code;
 
 import java.util.Random;
-import java.util.Scanner;
 
-public class CalcGame {
-    private static final int NEED_MULT = 0;
-    private static final int NEED_ADD = 1;
-    private static final int NEED_SUB = 2;
-    private static final int ROUNDS = 3;
-    private static final int FROM_RANDOM_NUMBER = 1;
-    private static final int TO_RANDOM_NUMBER = 10;
+public class CalcGame implements Game {
+    private enum Operation {
+        MULTIPLICATION,
+        ADDITION,
+        SUBTRACTION
+    }
+    private final int FROM_RANDOM_NUMBER = 1;
+    private final int TO_RANDOM_NUMBER = 10;
+    private final String RULES = "What is the result of the expression?";
+    private String rightAnswer;
+    Random random;
 
-    public static boolean start() {
-        System.out.println("What is the result of the expression?");
-        Scanner sc = new Scanner(System.in);
-        Random random = new Random();
+    CalcGame() {
+        this.random = new Random();
+        System.out.println(this.RULES);
+    }
 
-        for (int i = 0; i < ROUNDS; i++) {
-            int whatNeed = random.nextInt(NEED_SUB + 1);
-            int leftNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
-            int rightNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
-
-            String question;
-            int rightAnswer;
-
-            switch (whatNeed) {
-                case NEED_MULT -> {
-                    question = leftNum + " * " + rightNum;
-                    rightAnswer = leftNum * rightNum;
-                }
-                case NEED_ADD -> {
-                    question = leftNum + " + " + rightNum;
-                    rightAnswer = leftNum + rightNum;
-                }
-                case NEED_SUB -> {
-                    question = leftNum + " - " + rightNum;
-                    rightAnswer = leftNum - rightNum;
-                }
-                default -> {
-                    System.out.println("Something Wrong!");
-                    sc.close();
-                    return false;
-                }
-            }
-
-            System.out.print("Question: " + question + "\nYour answer: ");
-            try {
-                int userAnswer = Integer.parseInt(sc.nextLine());
-
-                if (userAnswer == rightAnswer) {
-                    System.out.println("Correct!");
-                } else {
-                    System.out.println("'" + userAnswer + "' is wrong answer ;(. " +
-                            "Correct answer was '" + rightAnswer + "'.");
-                    sc.close();
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                sc.close();
-                return false;
-            }
+    public boolean isRightAnswer(String userAnswer) {
+        if (!userAnswer.equals(rightAnswer)) {
+            System.out.println("'" + userAnswer + "' is wrong answer ;(. " +
+                    "Correct answer was '" + rightAnswer + "'.");
+            return false;
         }
 
-        sc.close();
         return true;
+    }
+
+    public String getQuestion() {
+        int leftNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
+        int rightNum = FROM_RANDOM_NUMBER + random.nextInt(TO_RANDOM_NUMBER);
+
+        return switch (this.getRandomOperation()) {
+            case MULTIPLICATION -> {
+                this.rightAnswer = String.valueOf(leftNum * rightNum);
+                yield leftNum + " * " + rightNum;
+            }
+            case ADDITION -> {
+                this.rightAnswer = String.valueOf(leftNum + rightNum);
+                yield leftNum + " + " + rightNum;
+            }
+            default -> {
+                this.rightAnswer = String.valueOf(leftNum - rightNum);
+                yield leftNum + " - " + rightNum;
+            }
+        };
+    }
+
+    private Operation getRandomOperation() {
+        Operation[] operations = Operation.values();
+        int index = random.nextInt(operations.length);
+        return operations[index];
     }
 }
